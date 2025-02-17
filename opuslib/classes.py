@@ -169,15 +169,19 @@ class Encoder(object):
         opuslib.api.encoder.encoder_ctl(
             self.encoder_state, opuslib.api.ctl.reset_state)
 
-    def encode(self, pcm_data: bytes, frame_size: int) -> bytes:
+    def encode(self, pcm_data: bytes, frame_size: int, max_bytes_size: int = None) -> bytes:
         """
         Encodes given PCM data as Opus.
         """
+
+        max_size = max_bytes_size if max_bytes_size else len(pcm_data)
+        
+        
         return opuslib.api.encoder.encode(
             self.encoder_state,
             pcm_data,
             frame_size,
-            len(pcm_data)
+            max_size
         )
 
     def encode_float(self, pcm_data: bytes, frame_size: int) -> bytes:
